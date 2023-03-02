@@ -1,29 +1,6 @@
 import React, { useEffect, useState } from 'react'
-
-const navigate = (href) => {
-  window.history.pushState({}, '', href)
-  // create a custom event
-  const navigateEvent = new Event('pushState')
-  window.dispatchEvent(navigateEvent)
-}
-
-const HomePage = () => {
-  return (
-    <main>
-      <h1>This is our home page in a react router project</h1>
-      <button onClick={() => navigate('/about')}>Go to About me</button>
-    </main>
-  )
-}
-
-const AboutPage = () => {
-  return (
-    <main>
-      <h1>This is our About page, I am the better developer for your bussines</h1>
-      <button onClick={() => navigate('/')}>Go to Home page</button>
-    </main>
-  )
-}
+import About from './pages/About'
+import Home from './pages/Home'
 
 const App = () => {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
@@ -44,8 +21,8 @@ const App = () => {
 
   return (
     <div>
-      {currentPath === '/' && <HomePage />}
-      {currentPath === '/about' && <AboutPage />}
+      {currentPath === '/' && <Home />}
+      {currentPath === '/about' && <About />}
     </div>
   )
 }
