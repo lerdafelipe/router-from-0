@@ -1,28 +1,25 @@
-import React, { useEffect, useState } from 'react'
 import About from './pages/About'
+import E404 from './pages/E404'
 import Home from './pages/Home'
+import Router from './router/Router'
+
+const appRoutes = [
+  {
+    path: '/',
+    Component: Home
+  }, {
+    path: '/about',
+    Component: About
+  }
+]
 
 const App = () => {
-  const [currentPath, setCurrentPath] = useState(window.location.pathname)
-
-  useEffect(() => {
-    const onLocationChange = () => {
-      setCurrentPath(window.location.pathname)
-    }
-
-    window.addEventListener('pushState', onLocationChange)
-    window.addEventListener('popstate', onLocationChange)
-
-    return () => {
-      window.removeEventListener('pushState', onLocationChange)
-      window.removeEventListener('popstate', onLocationChange)
-    }
-  }, [])
-
   return (
     <div>
-      {currentPath === '/' && <Home />}
-      {currentPath === '/about' && <About />}
+      <Router
+        routes={appRoutes}
+        defaultComponent={E404}
+      />
     </div>
   )
 }
