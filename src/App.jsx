@@ -34,8 +34,12 @@ const App = () => {
     }
 
     window.addEventListener('pushState', onLocationChange)
+    window.addEventListener('popstate', onLocationChange)
 
-    return () => window.removeEventListener('pushState', onLocationChange)
+    return () => {
+      window.removeEventListener('pushState', onLocationChange)
+      window.removeEventListener('popstate', onLocationChange)
+    }
   }, [])
 
   return (
