@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { match } from 'path-to-regexp'
 
 export default function Router ({ routes = [], defaultComponent: DefaultComponent = () => null }) {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
@@ -17,7 +18,20 @@ export default function Router ({ routes = [], defaultComponent: DefaultComponen
     }
   }, [])
 
-  const ToRender = routes.find(route => route.path === currentPath)?.Component
+  let routeParams = {}
 
-  return ToRender ? <ToRender /> : <DefaultComponent />
+  const ToRender = routes.find(({ path }) => {
+    if (path === currentPath) return true
+
+    const matcherURL = match(path, { decode: decodeURIComponent })
+    const matched = matcherURL(currentPath)
+    if (!matched) return false
+
+    routeParams = matched.params
+    return true
+  })?.Component
+
+  return ToRender
+    ? <ToRender routeParams={routeParams} />
+    : <DefaultComponent routeParams={routeParams} />
 }
