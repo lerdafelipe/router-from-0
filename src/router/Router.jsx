@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Children } from 'react'
 import { match } from 'path-to-regexp'
 
-export default function Router ({ routes = [], defaultComponent: DefaultComponent = () => null }) {
+export default function Router ({ children, routes = [], defaultComponent: DefaultComponent = () => null }) {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
 
   useEffect(() => {
@@ -20,7 +20,16 @@ export default function Router ({ routes = [], defaultComponent: DefaultComponen
 
   let routeParams = {}
 
-  const ToRender = routes.find(({ path }) => {
+  const routesFromChildrens = Children.map(children, ({ props, type }) => {
+    const { name } = type
+    const isRoute = name === 'Route'
+
+    return isRoute ? props : null
+  })
+
+  const routesConcated = routes.concat(routesFromChildrens)
+
+  const ToRender = routesConcated.find(({ path }) => {
     if (path === currentPath) return true
 
     const matcherURL = match(path, { decode: decodeURIComponent })
