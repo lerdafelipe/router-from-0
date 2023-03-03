@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Route } from './router/Route'
-import Router from './router/Router'
+import { Router } from './router/Router'
 const About = lazy(() => import('./pages/About'))
 const Home = lazy(() => import('./pages/Home'))
 const Search = lazy(() => import('./pages/Search'))
