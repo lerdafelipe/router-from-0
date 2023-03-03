@@ -1,10 +1,25 @@
 import { Link } from '../router/Link'
 
-const About = ({ nav }) => {
+const i18n = {
+  es: {
+    title: 'Esta es la página sobre mi. Que sepas que soy el mejor programador para tu negocio',
+    link: 'Ir a la página de inicio'
+  },
+  en: {
+    title: 'This is our About page, I am the best developer for your bussines',
+    link: 'Go to Home page'
+  }
+}
+
+const useI18n = (lang) => { return i18n[lang] || i18n.es }
+
+const About = ({ routeParams }) => {
+  const i18n = useI18n(routeParams.lang ?? 'es')
+
   return (
     <main>
-      <h1>This is our About page, I am the better developer for your bussines</h1>
-      <Link to='/'>Go to Home page</Link>
+      <h1>{i18n.title}</h1>
+      <Link to='/'>{i18n.link}</Link>
     </main>
   )
 }

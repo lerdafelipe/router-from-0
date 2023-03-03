@@ -1,11 +1,16 @@
-import About from './pages/About'
-import E404 from './pages/E404'
-import Home from './pages/Home'
-import Search from './pages/Search'
+import { lazy, Suspense } from 'react'
 import { Route } from './router/Route'
 import Router from './router/Router'
+const About = lazy(() => import('./pages/About'))
+const Home = lazy(() => import('./pages/Home'))
+const Search = lazy(() => import('./pages/Search'))
+const E404 = lazy(() => import('./pages/E404'))
 
 const appRoutes = [
+  {
+    path: '/about',
+    Component: About
+  },
   {
     path: '/search/:query',
     Component: Search
@@ -15,13 +20,15 @@ const appRoutes = [
 const App = () => {
   return (
     <div>
-      <Router
-        routes={appRoutes}
-        defaultComponent={E404}
-      >
-        <Route path='/' Component={Home} />
-        <Route path='/about' Component={About} />
-      </Router>
+      <Suspense fallback={<p>Loading...</p>}>
+        <Router
+          routes={appRoutes}
+          defaultComponent={E404}
+        >
+          <Route path='/' Component={Home} />
+          <Route path='/:lang/about' Component={About} />
+        </Router>
+      </Suspense>
     </div>
   )
 }
